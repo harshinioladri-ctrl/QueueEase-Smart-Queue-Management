@@ -36,3 +36,7 @@ build/
 .vscode/
 
 *.log
+
+node_modules/
+dist/
+*.log
