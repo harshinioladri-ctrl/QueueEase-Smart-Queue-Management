@@ -49,10 +49,18 @@ function Register() {
         } catch (error) {
             console.error("Registration error:", error);
 
-            setError(
-                error.response?.data?.message ||
-                "Registration failed. Please try again."
-            );
+            if (!error.response) {
+                setError(
+                    "Unable to connect to backend server. Please verify the backend is running and the API URL is configured."
+                );
+            } else {
+                setError(
+                    error.response?.data?.message ||
+                    (typeof error.response?.data === "string"
+                        ? error.response.data
+                        : "Registration failed. Please try again.")
+                );
+            }
         }
     };
 

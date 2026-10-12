@@ -32,10 +32,20 @@ function Login() {
         } catch (error) {
             console.error("Login error:", error);
 
-            setError(
-                error.response?.data?.message ||
-                "Invalid email or password"
-            );
+            if (!error.response) {
+                setError(
+                    "Unable to connect to backend server. Please verify the backend is running and the API URL is configured."
+                );
+            } else if (error.response.status === 401) {
+                setError("Invalid email or password");
+            } else {
+                setError(
+                    error.response?.data?.message ||
+                    (typeof error.response?.data === "string"
+                        ? error.response.data
+                        : "Login failed. Please try again.")
+                );
+            }
         }
     };
 
@@ -91,6 +101,12 @@ function Login() {
                         Register
                     </button>
                 </p>
+
+                <div style={{ marginTop: "1rem", padding: "0.75rem", backgroundColor: "#f3f4f6", borderRadius: "6px", fontSize: "0.85rem", color: "#4b5563" }}>
+                    <strong>Demo Accounts:</strong><br />
+                    Admin: <code>admin@queueease.com</code> / <code>admin123</code><br />
+                    Customer: <code>customer@queueease.com</code> / <code>customer123</code>
+                </div>
 
             </div>
         </div>
